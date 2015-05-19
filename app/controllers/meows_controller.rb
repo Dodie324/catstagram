@@ -6,15 +6,38 @@ class MeowsController < ApplicationController
     # Build a Meow by the current user for the post
     meow = current_user.meows.build(post: post)
 
-    if meow.save
-      redirect_to :back, notice: "We heard your Meow!"
-    else
-      redirect_to :back
+    respond_to do |format|
+      if meow.save
+        format.html {
+          redirect_to :back,
+          notice: "We heard your Meow!"
+        }
+        format.json {
+          render json: meow
+        }
+      else
+        format.html {
+          redirect_to :back
+        }
+        format.json {
+          render json: meow.errors,
+          status: :unprocessable_entity
+        }
+      end
     end
   end
 
   def destroy
     current_user.meows.destroy(params[:id])
-    redirect_to :back, notice: "All evidence of your meowing has been destroyed!"
+
+    respond_to do |format|
+      format.html {
+        redirect_to :back,
+        notice: "All evidence of your meowing has been destroyed!"
+      }
+      format.json {
+        head :no_content
+      }
+    end
   end
 end

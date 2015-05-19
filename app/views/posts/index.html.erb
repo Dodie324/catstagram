@@ -7,9 +7,11 @@
   <% if user_signed_in? %>
     <% if post.has_meow_from?(current_user) %>
       <%= button_to "Remove Meow", post_meow_path(post, post.meow_from(current_user)),
-        method: :delete%>
+        method: :delete,
+        form: { data: { "meow-button" => "delete" } } %>
     <% else %>
-      <%= button_to "Meow", post_meows_path(post), method: :post %>
+      <%= button_to "Meow", post_meows_path(post), method: :post,
+        form: { data: { "meow-button" => "create" } } %>
     <% end %>
   <% end %>
 

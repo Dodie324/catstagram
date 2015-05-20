@@ -1,9 +1,11 @@
 <h1>Meow</h1>
 
 <% @posts.each do |post| %>
+<div data-post-id="<%= post.id %>">
   <%= image_tag post.image.url %>
-  <%= pluralize(post.meows.count, 'Meow') %>
-
+  <div data-meow-count="<%= post.meows.count %>">
+    <p id="meowCount"><%= pluralize(post.meows.count, 'Meow') %></p>
+  </div>
   <% if user_signed_in? %>
     <% if post.has_meow_from?(current_user) %>
       <%= button_to "Remove Meow", post_meow_path(post, post.meow_from(current_user)),
@@ -16,4 +18,5 @@
   <% end %>
 
   <p><%= post.description %></p>
+  </div>
 <% end %>
